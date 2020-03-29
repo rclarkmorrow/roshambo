@@ -29,6 +29,12 @@ class Player():
         self.their_move = their_move
 
 
+class RockPlayer(Player):
+    # The RockPlayer only plays rock as a move.
+    def move(self):
+        return moves[0]
+
+
 class RandomPlayer(Player):
     # The RandomPlayer class always makes random moves.
     def move(self):
@@ -122,7 +128,7 @@ class Game:
                 new_game_input = input("\nWould you like to play again? > ")
                 if new_game_input.lower() in new_game:
                     game = Game(HumanPlayer(), random.choice((ReflectPlayer(),
-                                RandomPlayer(), CyclePlayer())))
+                                RandomPlayer(), CyclePlayer(), RockPlayer())))
                     game.play_game()
                 elif new_game_input.lower() in end_game:
                     exit("\nGoodbye!")
@@ -185,5 +191,5 @@ if __name__ == '__main__':
     # Launches game. Game is played between a human player and a randomly
     # selected computer opponent.
     game = Game(HumanPlayer(), random.choice((ReflectPlayer(), RandomPlayer(),
-                CyclePlayer())))
+                CyclePlayer(), RockPlayer())))
     game.play_game()
