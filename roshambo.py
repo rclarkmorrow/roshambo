@@ -69,14 +69,18 @@ class HumanPlayer(Player):
         input_text = ""
         for move in range(len(moves)):
             if move < len(moves)-1:
-                input_text = input_text + (f"{moves[move]}, ")
+                input_text = input_text + (f"{moves[move]} ({move + 1}), ")
             else:
-                input_text = input_text + (f"{moves[move]}")
+                input_text = input_text + (f"{moves[move]} ({move + 1})")
 
         while True:
             player_move = input((f"{input_text}? > "))
             if player_move.lower() in moves:
                 return player_move
+            elif player_move.isdigit():
+                index = int(player_move) - 1
+                if index < 3:
+                    return moves[index]
             elif player_move.lower() in quit_game:
                 return "quit"
 
@@ -86,6 +90,11 @@ def beats(one, two):
     return ((one == 'rock' and two == 'scissors') or
             (one == 'scissors' and two == 'paper') or
             (one == 'paper' and two == 'rock'))
+
+
+def choose_random_player():
+    players = [ReflectPlayer(), RandomPlayer(), CyclePlayer(), RockPlayer()]
+    return random.choice(players)
 
 
 class Game:
@@ -127,8 +136,7 @@ class Game:
             while True:
                 new_game_input = input("\nWould you like to play again? > ")
                 if new_game_input.lower() in new_game:
-                    game = Game(HumanPlayer(), random.choice((ReflectPlayer(),
-                                RandomPlayer(), CyclePlayer(), RockPlayer())))
+                    game = Game(HumanPlayer(), choose_random_player())
                     game.play_game()
                 elif new_game_input.lower() in end_game:
                     exit("\nGoodbye!")
@@ -190,6 +198,5 @@ class Game:
 if __name__ == '__main__':
     # Launches game. Game is played between a human player and a randomly
     # selected computer opponent.
-    game = Game(HumanPlayer(), random.choice((ReflectPlayer(), RandomPlayer(),
-                CyclePlayer(), RockPlayer())))
+    game = Game(HumanPlayer(), choose_random_player())
     game.play_game()
